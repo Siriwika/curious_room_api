@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Vote extends Model {
     /**
@@ -12,33 +10,36 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Vote.belongsTo(models.User, {
         foreignKey: "userId",
-        as:"user_vote",
-      })
+        as: "user_vote",
+      });
       Vote.belongsTo(models.Post, {
         foreignKey: "postId",
-        as:"post_vote",
-      })
+        as: "post_vote",
+      });
     }
-  };
-  Vote.init({
-    voteStatus: DataTypes.BOOLEAN,
-    userId: {
-      type:DataTypes.INTEGER,
-      references:{
-        model:'User',
-        key:'id'
+  }
+  Vote.init(
+    {
+      voteStatus: DataTypes.BOOLEAN,
+      userId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: "User",
+          key: "id",
+        },
+      },
+      postId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: "Post",
+          key: "id",
+        },
       },
     },
-    postId: {
-      type:DataTypes.INTEGER,
-      references:{
-        model:'Post',
-        key:'id'
-      },
-    },
-  }, {
-    sequelize,
-    modelName: 'Vote',
-  });
+    {
+      sequelize,
+      modelName: "Vote",
+    }
+  );
   return Vote;
 };

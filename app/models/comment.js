@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Comment extends Model {
     /**
@@ -13,42 +11,45 @@ module.exports = (sequelize, DataTypes) => {
       Comment.belongsTo(models.Post, {
         onDelete: "CASCADE",
         foreignKey: "postId",
-        as:"post_comment",
-      })
+        as: "post_comment",
+      });
       Comment.belongsTo(models.User, {
         onDelete: "CASCADE",
         foreignKey: "userId",
-        as:"user_comment",
-      })
-      Comment.hasMany(models.CommentHistory,{
+        as: "user_comment",
+      });
+      Comment.hasMany(models.CommentHistory, {
         foreignKey: "commentId",
-        as:"comment_history",
-      })
-      Comment.hasOne(models.Post,{
+        as: "comment_history",
+      });
+      Comment.hasOne(models.Post, {
         foreignKey: "commentId",
-        as:"best_comment",
-      })
+        as: "best_comment",
+      });
     }
-  };
-  Comment.init({
-    postId: {
-      type:DataTypes.INTEGER,
-      references:{
-        model:'Post',
-        key:'id'
+  }
+  Comment.init(
+    {
+      postId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: "Post",
+          key: "id",
+        },
       },
-    },
-    userId: {
-      type:DataTypes.INTEGER,
-      references:{
-        model:'User',
-        key:'id'
+      userId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: "User",
+          key: "id",
+        },
       },
+      statusComment: DataTypes.ENUM("ACTIVE", "DELETE"),
     },
-    statusComment: DataTypes.ENUM('ACTIVE', 'DELETE')
-  }, {
-    sequelize,
-    modelName: 'Comment',
-  });
+    {
+      sequelize,
+      modelName: "Comment",
+    }
+  );
   return Comment;
 };

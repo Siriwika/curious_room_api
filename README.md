@@ -1,1 +1,1 @@
-# CuriousRoom_api
+# curious_room_api

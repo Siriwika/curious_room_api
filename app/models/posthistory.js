@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class PostHistory extends Model {
     /**
@@ -13,24 +11,27 @@ module.exports = (sequelize, DataTypes) => {
       PostHistory.belongsTo(models.Post, {
         onDelete: "CASCADE",
         foreignKey: "postId",
-        as:"post_history",
-      })
+        as: "post_history",
+      });
     }
-  };
-  PostHistory.init({
-    content: DataTypes.STRING,
-    image: DataTypes.STRING,
-    status: DataTypes.BOOLEAN,
-    postId: {
-      type:DataTypes.INTEGER,
-      references:{
-        model:'Post',
-        key:'id'
+  }
+  PostHistory.init(
+    {
+      content: DataTypes.STRING,
+      image: DataTypes.STRING,
+      status: DataTypes.BOOLEAN,
+      postId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: "Post",
+          key: "id",
+        },
       },
     },
-  }, {
-    sequelize,
-    modelName: 'PostHistory',
-  });
+    {
+      sequelize,
+      modelName: "PostHistory",
+    }
+  );
   return PostHistory;
 };

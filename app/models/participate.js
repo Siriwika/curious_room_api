@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Participate extends Model {
     /**
@@ -13,34 +11,37 @@ module.exports = (sequelize, DataTypes) => {
       Participate.belongsTo(models.User, {
         onDelete: "CASCADE",
         foreignKey: "userId",
-        as:"user_participate",
-      })
+        as: "user_participate",
+      });
       Participate.belongsTo(models.Room, {
         onDelete: "CASCADE",
         foreignKey: "roomId",
-        as:"room_participate",
-      })
+        as: "room_participate",
+      });
     }
-  };
-  Participate.init({
-    joinStatus: DataTypes.BOOLEAN,
-    userId: {
-      type:DataTypes.INTEGER,
-      references:{
-        model:'User',
-        key:'id'
+  }
+  Participate.init(
+    {
+      joinStatus: DataTypes.BOOLEAN,
+      userId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: "User",
+          key: "id",
+        },
+      },
+      roomId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: "Room",
+          key: "id",
+        },
       },
     },
-    roomId: {
-      type:DataTypes.INTEGER,
-      references:{
-        model:'Room',
-        key:'id'
-      },
-    },
-  }, {
-    sequelize,
-    modelName: 'Participate',
-  });
+    {
+      sequelize,
+      modelName: "Participate",
+    }
+  );
   return Participate;
 };

@@ -1,8 +1,9 @@
-const { test } = require("../controllers/users");
-
-const controller = ("../controllers/users");
+const { getUser, createUser } = require("../controllers/users");
+const { createRoom } = require("../controllers/rooms");
 
 module.exports = function (app) {
+  app.get("/user/:email", getUser);
+  app.post("/user", createUser);
 
-    app.get("/user", test);
-}
+  app.post("/room", createRoom);
+};

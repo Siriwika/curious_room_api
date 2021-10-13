@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Post extends Model {
     /**
@@ -10,61 +8,64 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Post.hasMany(models.Comment,{
+      Post.hasMany(models.Comment, {
         foreignKey: "postId",
-        as:"post_comment",
-      })
+        as: "post_comment",
+      });
       Post.belongsTo(models.Comment, {
         onDelete: "CASCADE",
         foreignKey: "commentId",
-        as:"best_comment",
-      })
+        as: "best_comment",
+      });
       Post.belongsTo(models.User, {
         onDelete: "CASCADE",
         foreignKey: "userId",
-        as:"user_post",
-      })
+        as: "user_post",
+      });
       Post.belongsTo(models.Room, {
         onDelete: "CASCADE",
         foreignKey: "roomId",
-        as:"room_post",
-      })
-      Post.hasMany(models.PostHistory,{
+        as: "room_post",
+      });
+      Post.hasMany(models.PostHistory, {
         foreignKey: "postId",
-        as:"post_history",
-      })
-      Post.hasMany(models.Vote,{
+        as: "post_history",
+      });
+      Post.hasMany(models.Vote, {
         foreignKey: "postId",
-        as:"post_vote",
-      })
+        as: "post_vote",
+      });
     }
-  };
-  Post.init({
-    commentId: {
-      type:DataTypes.INTEGER,
-      references:{
-        model:'Comment',
-        key:'id'
+  }
+  Post.init(
+    {
+      commentId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: "Comment",
+          key: "id",
+        },
       },
-    },
-    userId: {
-      type:DataTypes.INTEGER,
-      references:{
-        model:'User',
-        key:'id'
+      userId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: "User",
+          key: "id",
+        },
       },
-    },
-    roomId: {
-      type:DataTypes.INTEGER,
-      references:{
-        model:'Room',
-        key:'id'
+      roomId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: "Room",
+          key: "id",
+        },
       },
+      statusPost: DataTypes.ENUM("ACTIVE", "DELETE"),
     },
-    statusPost: DataTypes.ENUM('ACTIVE', 'DELETE')
-  }, {
-    sequelize,
-    modelName: 'Post',
-  });
+    {
+      sequelize,
+      modelName: "Post",
+    }
+  );
   return Post;
 };

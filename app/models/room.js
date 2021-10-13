@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Room extends Model {
     /**
@@ -12,32 +10,35 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Room.hasMany(models.Participate, {
         foreignKey: "roomId",
-        as:"room_participate",
-      })
+        as: "room_participate",
+      });
       Room.hasMany(models.Post, {
         foreignKey: "roomId",
-        as:"room_post",
-      })
+        as: "room_post",
+      });
       Room.belongsTo(models.User, {
         foreignKey: "userId",
-        as:"user_room",
-      })
+        as: "user_room",
+      });
     }
-  };
-  Room.init({
-    name: DataTypes.STRING,
-    code: DataTypes.STRING,
-    userId: {
-      type:DataTypes.INTEGER,
-      references:{
-        model:'User',
-        key:'id'
+  }
+  Room.init(
+    {
+      name: DataTypes.STRING,
+      code: DataTypes.STRING,
+      userId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: "User",
+          key: "id",
+        },
       },
+      statusRoom: DataTypes.ENUM("ACTIVE", "DELETE"),
     },
-    statusRoom: DataTypes.ENUM('ACTIVE', 'DELETE')
-  }, {
-    sequelize,
-    modelName: 'Room',
-  });
+    {
+      sequelize,
+      modelName: "Room",
+    }
+  );
   return Room;
 };
