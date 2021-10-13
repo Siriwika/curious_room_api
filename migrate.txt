@@ -1,0 +1,15 @@
+npx sequelize-cli model:generate --name User --attributes name:string,email:string,display:string,role:enum:'{ADMIN,USER}'
+
+npx sequelize-cli model:generate --name Room --attributes name:string,code:string,userId:integer,statusRoom:enum:'{ACTIVE,DELETE}'
+
+npx sequelize-cli model:generate --name Post --attributes commentId:integer,userId:integer,roomId:integer,statusPost:enum:'{ACTIVE,DELETE}'
+
+npx sequelize-cli model:generate --name PostHistory --attributes content:string,image:string,status:boolean,postId:integer
+
+npx sequelize-cli model:generate --name Comment --attributes postId:integer,userId:integer,statusComment:enum:'{ACTIVE,DELETE}'
+
+npx sequelize-cli model:generate --name CommentHistory --attributes content:string,commentId:integer,status:boolean
+
+npx sequelize-cli model:generate --name Participate --attributes joinStatus:boolean,userId:integer,roomId:integer
+
+npx sequelize-cli model:generate --name Vote --attributes voteStatus:boolean,userId:integer,postId:integer
