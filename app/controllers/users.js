@@ -1,7 +1,26 @@
 const model = require("../models");
+const multer = require('multer');
 const User = model.User;
 
+
+//stroe image
+const multerStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+      cb(null, 'public');
+    },
+  filename: (req, file, cb) => {
+    const ext = file.mimetype.split('/')[1]
+      cb(null, `files/user-${file.fieldname}-${Date.now()}.${ext}`);
+  }
+});
+
+const uploadImg = multer({storage: multerStorage}).single('display');
+
 module.exports = {
+
+  uploadImg
+  ,
+  
   //Get user by email
   getUser: async (req, res) => {
     email = req.params.email;
@@ -19,10 +38,12 @@ module.exports = {
 
   //Create user
   createUser: async (req, res) => {
-    user = req.body.user;
+    let file = req.file.path;
+    console.log('req file >>', file);
     data = await User.create({
-      name: user.name,
-      email: user.email,
+      name: req.body.name,
+      email: req.body.email,
+      display: file,
     });
     if (data) {
       res.status(200).json(data);

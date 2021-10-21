@@ -1,10 +1,17 @@
 const express = require("express");
 const cors = require("cors");
+const path = require("path")
 const logger = require("morgan");
 const app = express();
 
 app.use(logger("dev"));
 app.use(cors());
+
+
+app.set("view engine",'ejs')
+app.set('views',path.join(__dirname, 'views'))
+app.set(express.static(`${__dirname}/app/public`))
+app.use('/public', express.static('./public'));
 
 app.use(express.json());
 app.use(
