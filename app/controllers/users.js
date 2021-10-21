@@ -30,11 +30,10 @@ module.exports = {
     if (user) {
       res.json(user);
     } else {
-      res.status(404).send({
-        message: `Cannot find user with email = ${email}`,
-      });
+      res.status(500).json(user);
     }
   },
+
 
   //Create user
   createUser: async (req, res) => {
