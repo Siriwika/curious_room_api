@@ -1,9 +1,10 @@
-const { getUser, createUser , uploadImg } = require("../controllers/users");
-const { createRoom } = require("../controllers/rooms");
+const { getUser, createUser , UpdateUser , uploadImg } = require("../controllers/users")
+const { createRoom} = require("../controllers/rooms")
 
 module.exports = function (app) {
-  app.post("/user/:email", getUser);
-  app.post("/user", uploadImg, createUser);
+  app.post("/user/:email", getUser)
+  app.post("/user", uploadImg, createUser)
+  app.put("/user/:id", uploadImg, UpdateUser)
 
-  app.post("/room", createRoom);
+  app.post("/room", createRoom)
 };
