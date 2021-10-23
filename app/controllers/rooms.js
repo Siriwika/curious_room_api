@@ -1,5 +1,6 @@
 const model = require("../models");
 const Room = model.Room;
+const User = model.User;
 
 module.exports = {
   //Create room
@@ -12,12 +13,43 @@ module.exports = {
       code: genCode,
       userId: room.userId,
     });
-    if (data) {
-      res.status(200).json(data);
+    value = await Room.findOne({
+      where: { id: data.id },
+      include: [
+        {
+          model: User,
+          required: true,
+          as: "user_room",
+        },
+      ],
+    });
+    if (value) {
+      res.status(200).json(value);
     } else {
       res.status(500).send({
         message: `Cannot create room`,
       });
     }
   },
+
+  // getAboutRoom: async (req, res) => {
+  //   id = req.params.id;
+  //   room = await Room.findOne({
+  //     where: { id: id },
+  //     include: [
+  //       {
+  //         model: User,
+  //         required: true,
+  //         as: "user_room",
+  //       },
+  //     ],
+  //   });
+  //   if (room) {
+  //     res.status(200).json(room);
+  //   } else {
+  //     res.status(500).send({
+  //       message: `Cannot get about room`,
+  //     });
+  //   }
+  // },
 };

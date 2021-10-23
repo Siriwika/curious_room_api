@@ -40,6 +40,7 @@ module.exports = {
       display: req.body.display,
     });
     if (data) {
+      console.log(data.display);
       res.status(200).json(data);
     } else {
       res.status(500).send({
