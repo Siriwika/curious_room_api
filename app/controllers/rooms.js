@@ -52,4 +52,17 @@ module.exports = {
   //     });
   //   }
   // },
+  
+  //Get room by code
+  getRoom: async (req, res) => {
+    code = req.params.code;
+    room = await Room.findOne({
+      where: { code: code },
+    });
+    if (room) {
+      res.json(room);
+    } else {
+      res.status(500).json(room);
+    }
+  },
 };

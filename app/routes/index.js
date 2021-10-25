@@ -1,5 +1,5 @@
 const { getUser, createUser , UpdateUser , uploadImg } = require("../controllers/users")
-const { createRoom} = require("../controllers/rooms")
+const { createRoom, getRoom} = require("../controllers/rooms")
 const { getParticipate} = require("../controllers/participates")
 module.exports = function (app) {
   app.post("/user/:email", getUser)
@@ -7,6 +7,7 @@ module.exports = function (app) {
   app.put("/user/:id", uploadImg, UpdateUser)
 
   app.post("/room", createRoom)
+  app.get("/room/:code", getRoom)
   // app.get("/room/:id", getAboutRoom)
 
   app.get("/participate/:id", getParticipate)
