@@ -1,12 +1,11 @@
 FROM node:boron
 
-RUN mkdir -p /app
-WORKDIR /app
+WORKDIR /usr/src/app
 
-COPY package.json /app/
+COPY package.json /usr/src/app
 RUN npm install
 
-COPY . /app/
+COPY . /usr/src/app
 
 EXPOSE 8080
 
