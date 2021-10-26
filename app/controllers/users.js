@@ -38,6 +38,7 @@ module.exports = {
   //update user
   UpdateUser: async (req, res) => {
     const image = req.file.path ? (req.file.path).replace(/\\/g, "/").replace("public", "static") : "" ;
+    const url = "http://147.182.209.40/";
     console.log("new path omage >> ",image);
     id = req.params.id;
     user = await User.findOne({
@@ -46,7 +47,7 @@ module.exports = {
     if (req.body.name) {
       user.name = req.body.name;
     } else if (req.file.path) {
-      user.display = image;
+      user.display = url+image;
     }
     data = await user.save();
     if (data) {
