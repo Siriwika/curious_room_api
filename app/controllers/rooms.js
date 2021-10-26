@@ -32,6 +32,7 @@ module.exports = {
     }
   },
 
+
   // getAboutRoom: async (req, res) => {
   //   id = req.params.id;
   //   room = await Room.findOne({

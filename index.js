@@ -8,10 +8,7 @@ app.use(logger("dev"));
 app.use(cors());
 
 
-app.set("view engine",'ejs')
-app.set('views',path.join(__dirname, 'views'))
-app.set(express.static(`${__dirname}/app/public`))
-app.use('/public', express.static('./public'));
+app.use('/static', express.static(path.join(__dirname, "./public")));
 
 app.use(express.json());
 app.use(
@@ -24,5 +21,5 @@ require("./app/routes")(app);
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
-  console.log("Server is running on port ${PORT}.");
+  console.log(`Server is running on port ${PORT}.`);
 });
