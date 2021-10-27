@@ -59,9 +59,24 @@ module.exports = {
     room = await Room.findOne({
       where: { code: code },
     });
+    if(room){
+      value = await Room.findAll({
+        where: {id: room.id},
+        include:[
+          {
+            model: User,
+            require: true,
+            as: "user_room",
+          },
+        ]
+      });
+    }
     if (room) {
-      res.json(room);
+      res.status(200).json(value);
     } else {
+      // res.status(500).send({
+      //   message: `Cannot find Room`,
+      // });
       res.status(500).json(room);
     }
   },
