@@ -11,7 +11,7 @@ module.exports = {
       joinStatus: {
         allowNull: false,
         type: Sequelize.BOOLEAN,
-        defaultValue: 0
+        defaultValue: 1
       },
       userId: {
         type: Sequelize.INTEGER,

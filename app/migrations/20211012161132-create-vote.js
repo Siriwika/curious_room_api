@@ -10,7 +10,8 @@ module.exports = {
       },
       voteStatus: {
         allowNull: false,
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
+        defaultValue: 1
       },
       userId: {
         type: Sequelize.INTEGER,

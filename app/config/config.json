@@ -17,10 +17,11 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
-    "host": "127.0.0.1",
+    "username": "doadmin",
+    "password": "SPpdNgd4R8sP19CC",
+    "database": "curious_testdb",
+    "host": "db-mysql-sgp1-57582-do-user-10003243-0.b.db.ondigitalocean.com",
+    "port": 25060,
     "dialect": "mysql"
   }
 }

@@ -1,22 +1,10 @@
+const { image } = require("faker");
 const model = require("../models");
-const multer = require("multer");
 const User = model.User;
 
-//stroe image
-const multerStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "public");
-  },
-  filename: (req, file, cb) => {
-    const ext = file.mimetype.split("/")[1];
-    cb(null, `files/user-${file.fieldname}-${Date.now()}.${ext}`);
-  },
-});
-
-const uploadImg = multer({ storage: multerStorage }).single("display");
-
 module.exports = {
-  uploadImg,
+
+  // uploadImg,
   //Get user by email
   getUser: async (req, res) => {
     email = req.params.email;
@@ -32,8 +20,6 @@ module.exports = {
 
   //Create user
   createUser: async (req, res) => {
-    // let file = req.file.path;
-    // console.log('req file >>', file);
     data = await User.create({
       name: req.body.name,
       email: req.body.email,
@@ -51,6 +37,9 @@ module.exports = {
 
   //update user
   UpdateUser: async (req, res) => {
+    const image = req.file.path ? (req.file.path).replace(/\\/g, "/").replace("public", "static") : "" ;
+    const url = "http://147.182.209.40/";
+    console.log("new path omage >> ",image);
     id = req.params.id;
     user = await User.findOne({
       where: { id: id },
@@ -58,7 +47,7 @@ module.exports = {
     if (req.body.name) {
       user.name = req.body.name;
     } else if (req.file.path) {
-      user.display = req.file.path;
+      user.display = url+image;
     }
     data = await user.save();
     if (data) {
