@@ -1,6 +1,6 @@
 const { getUser, createUser , UpdateUser} = require("../controllers/users")
-const { createRoom , getMyRoom } = require("../controllers/rooms")
-const { getParticipate , getRoomParticipate} = require("../controllers/participates")
+const { createRoom , getMyRoom , getRoomByCode } = require("../controllers/rooms")
+const { getParticipate , getRoomParticipate, joinRoom} = require("../controllers/participates")
 const { uploadImg }  = require("../middlewares/multer")
 
 
@@ -11,7 +11,10 @@ module.exports = function (app) {
 
   app.post("/room", createRoom)
   app.get("/room/user/:userid", getMyRoom)
+  app.get("/room/:code", getRoomByCode)
 
   app.get("/participate/:roomid", getParticipate)
   app.get("/participate/room/:id", getRoomParticipate)
+  app.post("/participate", joinRoom)
 };
+

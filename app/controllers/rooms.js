@@ -31,6 +31,32 @@ module.exports = {
       });
     }
   },
+  getRoomByCode: async (req, res) => {
+    code = req.params.code;
+    room = await Room.findOne({
+      where: { code: code, statusRoom : 'ACTIVE' },
+    });
+    if(room){
+      value = await Room.findAll({
+        where: {id: room.id},
+        include:[
+          {
+            model: User,
+            require: true,
+            as: "user_room",
+          },
+        ]
+      });
+    }
+    if (room) {
+      res.status(200).json(value);
+    } else {
+      // res.status(500).send({
+      //   message: `Cannot find Room`,
+      // });
+      res.status(500).json(room);
+    }
+  },
 
   getMyRoom: async (req, res) => {
     userid = req.params.userid;
