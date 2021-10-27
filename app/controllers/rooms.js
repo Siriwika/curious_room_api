@@ -32,25 +32,16 @@ module.exports = {
     }
   },
 
-
-  // getAboutRoom: async (req, res) => {
-  //   id = req.params.id;
-  //   room = await Room.findOne({
-  //     where: { id: id },
-  //     include: [
-  //       {
-  //         model: User,
-  //         required: true,
-  //         as: "user_room",
-  //       },
-  //     ],
-  //   });
-  //   if (room) {
-  //     res.status(200).json(room);
-  //   } else {
-  //     res.status(500).send({
-  //       message: `Cannot get about room`,
-  //     });
-  //   }
-  // },
+  getMyRoom: async (req, res) => {
+    userid = req.params.userid;
+    room = await Room.findAll({
+      where: { userId: userid, statusRoom : 'ACTIVE' },
+    })
+    if(room){
+      res.status(200).json(room);
+    }
+    else {
+      res.status(200).json(null);
+    }
+  }
 };

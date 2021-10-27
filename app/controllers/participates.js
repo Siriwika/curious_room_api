@@ -6,7 +6,7 @@ module.exports = {
   getParticipate: async (req, res) => {
     roomid = req.params.roomid;
     data = await Participate.findAll({
-      where: { roomId: roomid },
+      where: { roomId: roomid, joinStatus: 1 },
       include: [
         {
           model: User,
@@ -27,19 +27,22 @@ module.exports = {
   getRoomParticipate: async (req, res) => {
     id = req.params.id;
     const room = await Participate.findAll({
-      where: { userId: id },
+      where: { userId: id , joinStatus: 1 },
       include: [
         {
           model: Room,
+          where: {
+            statusRoom : 'ACTIVE'
+          },
           required: true,
           as: "room_participate",
-          include:[
+          include: [
             {
-              model:User,
-              required:true,
-              as:'user_room'
-            }
-          ]
+              model: User,
+              required: true,
+              as: "user_room",
+            },
+          ],
         },
       ],
     });
