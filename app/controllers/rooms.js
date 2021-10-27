@@ -69,5 +69,51 @@ module.exports = {
     else {
       res.status(200).json(null);
     }
+  },
+
+  updateRoom: async(req,res) => {
+    roomid = req.params.roomid;
+    room = await Room.findOne({
+      where: {id: roomid},
+    });
+    if (req.body.name) {
+      room.name = req.body.name;
+      data = await room.save();
+      if (data) {
+        res.status(200).json(data);
+      } else {
+        res.status(500).send({
+          message: `Cannot update room`,
+        });
+      }
+    } else {
+      res.status(500).send({
+        message: `Cannot find room`,
+      });
+    }
+  },
+
+  deleteRoom: async(req, res) => {
+    roomid = req.params.roomid;
+    room = await Room.findOne({
+      where: {id: roomid}
+    });
+    if(room){
+      room.statusRoom = 'DELETE';
+    } else {
+      res.status(500).send({
+        message: `Cannot find room.`,
+      });
+    }
+    data = await room.save();
+    if(data) {
+      res.status(200).send({
+        message: `Delete room success.`,
+      });
+    }else {
+      res.status(500).send({
+        message: `Cannot Delete room`,
+      });
+    }
   }
 };

@@ -80,4 +80,28 @@ module.exports = {
       });
     }
   },
+
+  deleteParticipate: async (req,res) => {
+    roomid = req.params.roomid;
+    participate = await Participate.findOne({
+      where: { userId: req.body.userid , roomId: roomid},
+    });
+    if(req.body.userid){
+      participate.joinStatus = 0;
+    }else{
+      res.status(500).send({
+        message: `Cannot find participate.`,
+      });
+    }
+    data = await participate.save();
+    if(data) {
+      res.status(200).send({
+        message: `Delete participate success.`,
+      });
+    }else {
+      res.status(500).send({
+        message: `Cannot Delete participate`,
+      });
+    }
+  }
 };

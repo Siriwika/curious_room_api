@@ -5,7 +5,11 @@
     "database": "curious_testdb",
     "host": "db-mysql-sgp1-57582-do-user-10003243-0.b.db.ondigitalocean.com",
     "port": 25060,
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "timezone": "Asia/Bangkok",
+		"dialectOptions": {
+			"timezone": "local"
+		}
   },
 
 
@@ -22,6 +26,10 @@
     "database": "curious_testdb",
     "host": "db-mysql-sgp1-57582-do-user-10003243-0.b.db.ondigitalocean.com",
     "port": 25060,
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "timezone": "Asia/Bangkok",
+		"dialectOptions": {
+			"timezone": "local"
+		}
   }
 }
