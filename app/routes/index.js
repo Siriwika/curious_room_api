@@ -15,7 +15,11 @@ const {
   deleteParticipate,
 } = require("../controllers/participates");
 
+const {createPost} = require("../controllers/post");
+
 const { uploadImg } = require("../middlewares/multer");
+
+
 
 module.exports = function (app) {
   app.post("/user/:email", getUser);
@@ -32,4 +36,6 @@ module.exports = function (app) {
   app.get("/participate/room/:id", getRoomParticipate);
   app.post("/participate", joinRoom);
   app.put("/participate/:roomid", deleteParticipate);
+
+  app.post("/post", uploadImg.single("image"), createPost);
 };
