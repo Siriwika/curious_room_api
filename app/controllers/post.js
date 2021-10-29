@@ -2,6 +2,7 @@ const { image } = require("faker");
 const model = require("../models");
 const Post = model.Post;
 const PostHistory = model.PostHistory;
+const User = model.User;
 
 module.exports = {
   createPost: async (req, res) => {
@@ -51,13 +52,16 @@ module.exports = {
       where: { roomId: req.params.roomid, statusPost: "ACTIVE" },
       include: [
         {
+          model: User,
+          required: true,
+          as: "user_post",
+        },
+        {
           model: PostHistory,
           where: {
-            status : 1
+            status: 1,
           },
-          order: [
-            ['id', 'DESC'],
-        ],
+          order: ["id", "DESC"],
           required: true,
           as: "post_history",
         },
