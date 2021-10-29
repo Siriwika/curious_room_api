@@ -34,18 +34,18 @@ module.exports = {
   getRoomByCode: async (req, res) => {
     code = req.params.code;
     room = await Room.findOne({
-      where: { code: code, statusRoom : 'ACTIVE' },
+      where: { code: code, statusRoom: "ACTIVE" },
     });
-    if(room){
+    if (room) {
       value = await Room.findAll({
-        where: {id: room.id},
-        include:[
+        where: { id: room.id },
+        include: [
           {
             model: User,
             require: true,
             as: "user_room",
           },
-        ]
+        ],
       });
     }
     if (room) {
@@ -61,20 +61,19 @@ module.exports = {
   getMyRoom: async (req, res) => {
     userid = req.params.userid;
     room = await Room.findAll({
-      where: { userId: userid, statusRoom : 'ACTIVE' },
-    })
-    if(room){
+      where: { userId: userid, statusRoom: "ACTIVE" },
+    });
+    if (room) {
       res.status(200).json(room);
-    }
-    else {
+    } else {
       res.status(200).json(null);
     }
   },
 
-  updateRoom: async(req,res) => {
+  updateRoom: async (req, res) => {
     roomid = req.params.roomid;
     room = await Room.findOne({
-      where: {id: roomid},
+      where: { id: roomid },
     });
     if (req.body.name) {
       room.name = req.body.name;
@@ -93,27 +92,46 @@ module.exports = {
     }
   },
 
-  deleteRoom: async(req, res) => {
+  deleteRoom: async (req, res) => {
     roomid = req.params.roomid;
     room = await Room.findOne({
-      where: {id: roomid}
+      where: { id: roomid },
     });
-    if(room){
-      room.statusRoom = 'DELETE';
+    if (room) {
+      room.statusRoom = "DELETE";
     } else {
       res.status(500).send({
         message: `Cannot find room.`,
       });
     }
     data = await room.save();
-    if(data) {
+    if (data) {
       res.status(200).send({
         message: `Delete room success.`,
       });
-    }else {
+    } else {
       res.status(500).send({
         message: `Cannot Delete room`,
       });
     }
-  }
+  },
+
+  getAllRooms: async (req, res) => {
+      room = await Room.findAll({
+        where: {statusRoom: 'ACTIVE'},
+        include:[
+          {
+            model: User,
+            required: true,
+            as: "user_room"
+          }
+        ]
+      });
+      console.log(room);
+    if (room) {
+      res.json(room);
+    } else {
+      res.status(500).json(room);
+    }
+  },
 };
