@@ -6,6 +6,7 @@ const {
   getRoomByCode,
   updateRoom,
   deleteRoom,
+  getAllRooms,
 } = require("../controllers/rooms");
 
 const {
@@ -31,6 +32,7 @@ module.exports = function (app) {
   app.get("/room/:code", getRoomByCode);
   app.put("/room/:roomid", updateRoom);
   app.put("/room/delete/:roomid", deleteRoom);
+  app.get("/room", getAllRooms)
 
   app.get("/participate/:roomid", getParticipate);
   app.get("/participate/room/:id", getRoomParticipate);
