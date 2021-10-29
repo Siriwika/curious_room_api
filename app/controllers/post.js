@@ -6,7 +6,8 @@ const User = model.User;
 
 module.exports = {
   createPost: async (req, res) => {
-    img = req.body.file
+    console.log(req.file);
+    img = req.file
       ? req.file.path.replace(/\\/g, "/").replace("public", "static")
       : null;
     const url = "http://147.182.209.40/";
@@ -16,7 +17,7 @@ module.exports = {
     });
     console.log(data);
     if (data.id != null) {
-      if (img != null) {
+      if (img) {
         post = await PostHistory.create({
           content: req.body.content,
           image: url + img,
@@ -25,11 +26,9 @@ module.exports = {
       } else {
         post = await PostHistory.create({
           content: req.body.content,
-          image: null,
           postId: data.id,
         });
       }
-
       if (post) {
         res.status(200).send({
           message: `Create post success`,
