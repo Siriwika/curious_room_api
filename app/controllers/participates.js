@@ -25,40 +25,50 @@ module.exports = {
   },
 
   joinRoom: async (req, res) => {
-    joinData = await Participate.create({
-      userId: req.body.userId,
-      roomId: req.body.roomId
+    lookingData = await Participate.findOne({
+      where: {
+        userId: req.body.userId,
+        roomId: req.body.roomId,
+      },
     });
-    if(joinData){
-      value = await Participate.findAll({
-        where: { userId: req.body.userId },
-        include:[
-          {
-            model:User,
-            require:true,
-            as:"user_participate"
-          }
-        ]
-      })
-    }
-    if (joinData) {
-      res.status(200).json(value);
+    if (lookingData) {
+      res.status(200).json(lookingData);
     } else {
-      res.status(500).send({
-        message: `Cannot create participates`,
+      joinData = await Participate.create({
+        userId: req.body.userId,
+        roomId: req.body.roomId,
       });
+      if (joinData) {
+        value = await Participate.findAll({
+          where: { userId: req.body.userId },
+          include: [
+            {
+              model: User,
+              require: true,
+              as: "user_participate",
+            },
+          ],
+        });
+      }
+      if (joinData) {
+        res.status(201).json(value);
+      } else {
+        res.status(500).send({
+          message: `Cannot create participates`,
+        });
+      }
     }
   },
 
   getRoomParticipate: async (req, res) => {
     id = req.params.id;
     const room = await Participate.findAll({
-      where: { userId: id , joinStatus: 1 },
+      where: { userId: id, joinStatus: 1 },
       include: [
         {
           model: Room,
           where: {
-            statusRoom : 'ACTIVE'
+            statusRoom: "ACTIVE",
           },
           required: true,
           as: "room_participate",
@@ -81,27 +91,27 @@ module.exports = {
     }
   },
 
-  deleteParticipate: async (req,res) => {
+  deleteParticipate: async (req, res) => {
     roomid = req.params.roomid;
     participate = await Participate.findOne({
-      where: { userId: req.body.userid , roomId: roomid},
+      where: { userId: req.body.userid, roomId: roomid },
     });
-    if(req.body.userid){
+    if (req.body.userid) {
       participate.joinStatus = 0;
-    }else{
+    } else {
       res.status(500).send({
         message: `Cannot find participate.`,
       });
     }
     data = await participate.save();
-    if(data) {
+    if (data) {
       res.status(200).send({
         message: `Delete participate success.`,
       });
-    }else {
+    } else {
       res.status(500).send({
         message: `Cannot Delete participate`,
       });
     }
-  }
+  },
 };
