@@ -32,7 +32,22 @@ module.exports = {
       },
     });
     if (lookingData) {
-      res.status(200).json(lookingData);
+      if (lookingData.joinStatus == false) {
+        updateStatus = await Participate.update(
+          {
+            joinStatus: true,
+          },
+          {
+            where: {
+              userId: req.body.userId,
+              roomId: req.body.roomId,
+            },
+          }
+        );
+        res.status(201).json(updateStatus);
+      } else {
+        res.status(200).json(lookingData);
+      }
     } else {
       joinData = await Participate.create({
         userId: req.body.userId,

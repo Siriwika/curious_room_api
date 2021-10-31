@@ -49,6 +49,7 @@ module.exports = {
     console.log(req.params.roomid);
     postInfo = await Post.findAll({
       where: { roomId: req.params.roomid, statusPost: "ACTIVE" },
+      order: [["id", "DESC"]],
       include: [
         {
           model: User,
@@ -60,7 +61,7 @@ module.exports = {
           where: {
             status: 1,
           },
-          order: ["id", "DESC"],
+         
           required: true,
           as: "post_history",
         },
