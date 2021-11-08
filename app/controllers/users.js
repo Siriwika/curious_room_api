@@ -1,4 +1,3 @@
-const { image } = require("faker");
 const model = require("../models");
 const User = model.User;
 
@@ -37,9 +36,6 @@ module.exports = {
 
   //update user
   UpdateUser: async (req, res) => {
-    const image = req.file.path ? (req.file.path).replace(/\\/g, "/").replace("public", "static") : "" ;
-    const url = "http://147.182.209.40/";
-    console.log("new path omage >> ",url+image);
     id = req.params.id;
     user = await User.findOne({
       where: { id: id },
@@ -47,6 +43,10 @@ module.exports = {
     if (req.body.name) {
       user.name = req.body.name;
     } else if (req.file.path) {
+      const image = req.file.path ? (req.file.path).replace(/\\/g, "/").replace("public", "static") : "" ;
+      console.log(req.file.path);
+      const url = "http://147.182.209.40/";
+      console.log("new path omage >> ",url+image);
       user.display = url+image;
     }
     data = await user.save();
