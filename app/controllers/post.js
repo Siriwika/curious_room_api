@@ -45,6 +45,8 @@ module.exports = {
     }
   },
 
+  
+
   getPost: async (req, res) => {
     console.log(req.params.roomid);
     postInfo = await Post.findAll({
