@@ -1,8 +1,8 @@
 # curious_room_api
 ## RESTful Web Services RESTful with 
-> Node.js 
-> Express
-> Sequelize ORM 
+> * Node.js 
+> * Express
+> * Sequelize ORM 
 
 ## Prepared a project by our group.
 1. Ms. Siriwika Puangthong
