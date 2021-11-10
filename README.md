@@ -33,5 +33,5 @@ getUser: async (req, res) => {
   ```
 
 ## Credit
-* [link][610107030011@dpu.ac.th]
-* [link][610107030035@dpu.ac.th]
+* 610107030011@dpu.ac.th
+* 610107030035@dpu.ac.th
