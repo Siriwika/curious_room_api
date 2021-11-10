@@ -1,5 +1,5 @@
 # curious_room_api
-## RESTful Web Services RESTful with 
+## RESTful Web Services with 
 * Node.js 
 * Express
 * Sequelize ORM 
