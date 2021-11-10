@@ -18,7 +18,7 @@
 > ### http get user where email
 
 getUser: async (req, res) => {
-''' email = req.params.email;
+``` email = req.params.email;
     user = await User.findOne({
       where: { email: email },
     });
@@ -29,7 +29,7 @@ getUser: async (req, res) => {
         message: `Cannot found user`,
       });
     }
-  }, '''
+  }, ```
 
 ## Credit
 * 610107030011@dpu.ac.th
