@@ -13,7 +13,9 @@ module.exports = {
     if (user) {
       res.json(user);
     } else {
-      res.status(500).json(user);
+      res.status(500).send({
+        message: `Cannot found user`,
+      });
     }
   },
 
