@@ -23,7 +23,7 @@ const { uploadImg } = require("../middlewares/multer");
 
 
 module.exports = function (app) {
-  app.post("/user/:email", getUser);
+  app.get("/user/:email", getUser);
   app.post("/user", createUser);
   app.put("/user/:id", uploadImg.single("display"), UpdateUser);
 
