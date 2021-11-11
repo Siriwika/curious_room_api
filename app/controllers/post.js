@@ -66,7 +66,8 @@ module.exports = {
         },
       ],
     });
-    if (postInfo) {
+    console.log(postInfo[0]);
+    if (postInfo[0] != null) {
       res.status(200).json(postInfo);
     } else if (postInfo[0] == null) {
       res.status(500).send({
