@@ -15,7 +15,11 @@ module.exports = {
         },
       ],
     });
-    if (data) {
+    if (data[0] == null) {
+      res.status(500).send({
+        message: `is not participates`,
+      });
+    } else if (data) {
       res.status(200).json(data);
     } else {
       res.status(500).send({
@@ -31,6 +35,7 @@ module.exports = {
         roomId: req.body.roomId,
       },
     });
+    console.log(lookingData);
     if (lookingData) {
       if (lookingData.joinStatus == false) {
         updateStatus = await Participate.update(
@@ -49,6 +54,11 @@ module.exports = {
         res.status(200).json(lookingData);
       }
     } else {
+      if (lookingData == null) {
+        res.status(500).send({
+          message: `Cannot create participates`,
+        });
+      }
       joinData = await Participate.create({
         userId: req.body.userId,
         roomId: req.body.roomId,
@@ -72,6 +82,9 @@ module.exports = {
           message: `Cannot create participates`,
         });
       }
+      res.status(500).send({
+        message: `Cannot create participates`,
+      });
     }
   },
 
@@ -97,11 +110,11 @@ module.exports = {
         },
       ],
     });
-    if (room) {
+    if (room[0] != null) {
       res.status(200).json(room);
     } else {
       res.status(500).send({
-        message: `Cannot find room Participate`,
+        message: `Cannot find room participate`,
       });
     }
   },
@@ -111,18 +124,24 @@ module.exports = {
     participate = await Participate.findOne({
       where: { userId: req.body.userid, roomId: roomid },
     });
-    if (req.body.userid) {
-      participate.joinStatus = 0;
-    } else {
-      res.status(500).send({
-        message: `Cannot find participate.`,
-      });
-    }
-    data = await participate.save();
-    if (data) {
-      res.status(200).send({
-        message: `Delete participate success.`,
-      });
+    if (participate) {
+      if (req.body.userid) {
+        participate.joinStatus = 0;
+      } else {
+        res.status(500).send({
+          message: `Cannot find participate.`,
+        });
+      }
+      data = await participate.save();
+      if (data) {
+        res.status(200).send({
+          message: `Delete participate success.`,
+        });
+      } else {
+        res.status(500).send({
+          message: `Cannot Delete participate`,
+        });
+      }
     } else {
       res.status(500).send({
         message: `Cannot Delete participate`,
