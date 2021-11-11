@@ -30,7 +30,9 @@ module.exports = {
         message: `Cannot create room`,
       });
     }
+
   },
+
   getRoomByCode: async (req, res) => {
     code = req.params.code;
     room = await Room.findOne({
@@ -51,10 +53,10 @@ module.exports = {
     if (room) {
       res.status(200).json(value);
     } else {
-      // res.status(500).send({
-      //   message: `Cannot find Room`,
-      // });
-      res.status(500).json(room);
+      res.status(500).send({
+        message: `Cannot find Room`,
+      });
+      // res.status(500).json(room);
     }
   },
 
@@ -66,7 +68,9 @@ module.exports = {
     if (room) {
       res.status(200).json(room);
     } else {
-      res.status(200).json(null);
+      res.status(500).send({
+        message: `Not found your room`,
+      });
     }
   },
 
@@ -131,7 +135,9 @@ module.exports = {
     if (room) {
       res.json(room);
     } else {
-      res.status(500).json(room);
+      res.status(500).send({
+        message: `Not found room`
+      });
     }
   },
 };
