@@ -11,12 +11,12 @@ module.exports = {
       ? req.file.path.replace(/\\/g, "/").replace("public", "static")
       : null;
     const url = "http://147.182.209.40/";
-    data = await Post.create({
-      userId: req.body.userId,
-      roomId: req.body.roomId,
-    });
-    console.log(data);
-    if (data.id != null) {
+    if (req.body.userId != null) {
+      data = await Post.create({
+        userId: req.body.userId,
+        roomId: req.body.roomId,
+      });
+      console.log(data);
       if (img) {
         post = await PostHistory.create({
           content: req.body.content,
@@ -45,8 +45,6 @@ module.exports = {
     }
   },
 
-  
-
   getPost: async (req, res) => {
     console.log(req.params.roomid);
     postInfo = await Post.findAll({
@@ -71,9 +69,13 @@ module.exports = {
     });
     if (postInfo) {
       res.status(200).json(postInfo);
-    } else {
+    } else if (postInfo[0] == null) {
       res.status(500).send({
         message: `No post`,
+      });
+    } else {
+      res.status(500).send({
+        message: `Cannot get post`,
       });
     }
   },
