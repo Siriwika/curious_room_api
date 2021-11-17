@@ -62,7 +62,7 @@ getUser: async (req, res) => {
   }, 
   ```
 
-## 👯‍ Prepared a project by our group.
+## Prepared a project by our group.
 1. [Ms.Siriwika Puangthong](https://github.com/Siriwika)
 2. [Mr.Poonnalak Keasornbua](https://github.com/Poonnaluk)
 
