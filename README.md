@@ -62,7 +62,7 @@ getUser: async (req, res) => {
   }, 
   ```
 
-## [link](https://cdn-icons.flaticon.com/png/512/1165/premium/1165674.png?token=exp=1637121356~hmac=b97b9784fd5b48a6ebd2c8fe0e43300a) Prepared a project by our group.
+## ![An old rock in the desert](https://cdn-icons.flaticon.com/png/512/1165/premium/1165674.png?token=exp=1637121356~hmac=b97b9784fd5b48a6ebd2c8fe0e43300a) Prepared a project by our group.
 1. Ms. Siriwika Puangthong
 2. Mr. Poonnalak Keasornbua
 
