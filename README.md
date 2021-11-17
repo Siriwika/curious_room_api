@@ -62,9 +62,9 @@ getUser: async (req, res) => {
   }, 
   ```
 
-## ![An old rock in the desert](https://cdn-icons.flaticon.com/png/512/1165/premium/1165674.png?token=exp=1637121356~hmac=b97b9784fd5b48a6ebd2c8fe0e43300a) Prepared a project by our group.
-1. Ms. Siriwika Puangthong
-2. Mr. Poonnalak Keasornbua
+## 👯‍ Prepared a project by our group.
+1. [Ms.Siriwika Puangthong](https://github.com/Siriwika)
+2. [Mr.Poonnalak Keasornbua](https://github.com/Poonnaluk)
 
 ## Credit
 * 610107030011@dpu.ac.th
