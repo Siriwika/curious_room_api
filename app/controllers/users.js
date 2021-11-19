@@ -52,7 +52,7 @@ module.exports = {
         : "";
       console.log(req.file.path);
       const url = "http://147.182.209.40/";
-      console.log("new path omage >> ", url + image);
+      console.log("new path image >> ", url + image);
       user.display = url + image;
     } else {
       res.status(500).send({
