@@ -119,7 +119,6 @@ module.exports = {
         },
       ],
     });
-    data = await User.findAll({    attributes: [[sequelize.fn('count', sequelize.col('userId')), 'count']],  });
 
     if (id) {
       res
