@@ -1,4 +1,4 @@
-const { getUser, createUser, UpdateUser } = require("../controllers/users");
+const { getUser, createUser, UpdateUser , getStatistic } = require("../controllers/users");
 
 const {
   createRoom,
@@ -26,6 +26,7 @@ module.exports = function (app) {
   app.get("/user/:email", getUser);
   app.post("/user", createUser);
   app.put("/user/:id", uploadImg.single("display"), UpdateUser);
+  app.get("/user/stat/:id", getStatistic);
 
   app.post("/room", createRoom);
   app.get("/room/user/:userid", getMyRoom);
