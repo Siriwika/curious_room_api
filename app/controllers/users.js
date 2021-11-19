@@ -70,7 +70,8 @@ module.exports = {
   },
 
   getStatistic: async (req, res) => {
-    id = req.params.id;
+    id = req.body.id;
+    role = req.body.role;
     post = await User.findAndCountAll({
       where: { id: id },
       include: [
@@ -94,20 +95,23 @@ module.exports = {
       ],
     });
     con = await User.findAndCountAll({
-      where : {id : id},
+      where: { id: id },
       include: [
-        {  model: Comment,
+        {
+          model: Comment,
           where: { statusComment: "Active" },
           as: "user_comment",
-          required: true, include: [
+          required: true,
+          include: [
             {
-              model : Post,
-              where : { statusPost: 'Active'},
-              as : 'best_comment'
-            }
-          ]}
-      ]
-    })
+              model: Post,
+              where: { statusPost: "Active" },
+              as: "best_comment",
+            },
+          ],
+        },
+      ],
+    });
     vote = await User.findAndCountAll({
       where: { id: id },
       include: [
@@ -119,16 +123,19 @@ module.exports = {
         },
       ],
     });
-
-    if (id) {
-      res
-        .status(200)
-        .json({
-          user_post: post.count,
-          user_comment: comment.count,
-          best_comment: con.count,
-          user_vote: vote.count,
-        });
+    if (post) {
+        if (role == "USER") {
+          res.status(200).json({
+            user_post: post.count,
+            user_comment: comment.count,
+            best_comment: con.count,
+            user_vote: vote.count,
+          });
+        } else {
+          res.status(200).json({
+            user_post: post.count,
+          });
+        }
     } else {
       res.status(500).send({
         message: `Cannot get statistic user`,
