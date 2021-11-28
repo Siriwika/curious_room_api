@@ -1,4 +1,3 @@
-const { image } = require("faker");
 const model = require("../models");
 const Post = model.Post;
 const PostHistory = model.PostHistory;
@@ -139,6 +138,22 @@ module.exports = {
     } else {
       res.status(500).send({
         message: `Cannot delete post`,
+      });
+    }
+  },
+  getPostHistory: async (req,res) => {
+    postHis = await PostHistory.findAll({
+      where: {postId: req.params.postid},
+      order: [
+        ['id', 'DESC']
+      ]
+    })
+    if(postHis){
+      res.json(postHis);
+    }
+    else{
+      res.status(500).send({
+        message: `Not found Post history`,
       });
     }
   },
