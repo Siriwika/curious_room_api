@@ -16,7 +16,7 @@ const {
   deleteParticipate,
 } = require("../controllers/participates");
 
-const {createPost, getPost,editPost,deletePost} = require("../controllers/post");
+const {createPost, getPost,editPost,deletePost, getPostHistory} = require("../controllers/post");
 
 const { uploadImg } = require("../middlewares/multer");
 
@@ -44,4 +44,5 @@ module.exports = function (app) {
   app.get("/post/:roomid", getPost);
   app.put("/post/edit", uploadImg.single("image"), editPost);
   app.put("/post/delete/:postid", deletePost);
+  app.get("/post/history/:postid", getPostHistory);
 };
