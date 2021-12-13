@@ -1,5 +1,4 @@
 const model = require("../models");
-const comment = require("../models/comment");
 const Comment = model.Comment;
 const CommentHistory = model.CommentHistory;
 const User = model.User;
@@ -34,6 +33,7 @@ module.exports = {
   getComment: async (req, res) => {
       commentInfo = await Comment.findAll({
           where: { postId: req.params.postId, statusComment: "ACTIVE"},
+          order: [["id", "DESC"]],
           include: [
               {
                   model: User,
