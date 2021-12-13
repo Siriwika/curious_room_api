@@ -20,6 +20,8 @@ const {createPost, getPost,editPost,deletePost, getPostHistory} = require("../co
 
 const { uploadImg } = require("../middlewares/multer");
 
+const { createComment, getComment, editComment, deleteComment, getCommentHistory } = require("../controllers/comment");
+
 
 
 module.exports = function (app) {
@@ -45,4 +47,10 @@ module.exports = function (app) {
   app.put("/post/edit", uploadImg.single("image"), editPost);
   app.put("/post/delete/:postid", deletePost);
   app.get("/post/history/:postid", getPostHistory);
+
+  app.post("/comment", createComment);
+  app.get("/comment/:postId", getComment);
+  app.put("/comment/edit", editComment);
+  app.put("/comment/delete/:commentId", deleteComment);
+  app.get("/comment/history/:commentId", getCommentHistory);
 };
