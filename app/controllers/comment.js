@@ -5,12 +5,12 @@ const User = model.User;
 
 module.exports = {
   createComment: async (req, res) => {
-    data = await Comment.create({
+   const data = await Comment.create({
       postId: req.body.postId,
       userId: req.body.userId,
     });
     if (data) {
-      comment = await CommentHistory.create({
+    const comment = await CommentHistory.create({
         content: req.body.content,
         commentId: data.id,
       });
