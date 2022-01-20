@@ -1,17 +1,16 @@
 const model = require("../models");
-const comment = require("../models/comment");
 const Comment = model.Comment;
 const CommentHistory = model.CommentHistory;
 const User = model.User;
 
 module.exports = {
   createComment: async (req, res) => {
-    data = await Comment.create({
+   const data = await Comment.create({
       postId: req.body.postId,
       userId: req.body.userId,
     });
     if (data) {
-      comment = await CommentHistory.create({
+    const comment = await CommentHistory.create({
         content: req.body.content,
         commentId: data.id,
       });
@@ -34,6 +33,7 @@ module.exports = {
   getComment: async (req, res) => {
       commentInfo = await Comment.findAll({
           where: { postId: req.params.postId, statusComment: "ACTIVE"},
+          order: [["id", "DESC"]],
           include: [
               {
                   model: User,
