@@ -1,19 +1,22 @@
+const { json } = require("express/lib/response");
 const model = require("../models");
+const post = require("./post");
 const Room = model.Room;
 const User = model.User;
+const Post = model.Post;
+const { QueryTypes } = require("sequelize");
 
 module.exports = {
   //Create room
   createRoom: async (req, res) => {
-    genCode = Math.random().toString(26).substring(2, 9);
-    console.log(genCode);
-    room = req.body.room;
-    data = await Room.create({
+    const genCode = Math.random().toString(26).substring(2, 9);
+    const room = req.body.room;
+    const data = await Room.create({
       name: room.name,
       code: genCode,
       userId: room.userId,
     });
-    value = await Room.findOne({
+    const value = await Room.findOne({
       where: { id: data.id },
       include: [
         {
@@ -30,12 +33,11 @@ module.exports = {
         message: `Cannot create room`,
       });
     }
-
   },
 
   getRoomByCode: async (req, res) => {
-    code = req.params.code;
-    room = await Room.findOne({
+    const code = req.params.code;
+    const room = await Room.findOne({
       where: { code: code, statusRoom: "ACTIVE" },
     });
     if (room) {
@@ -61,8 +63,8 @@ module.exports = {
   },
 
   getMyRoom: async (req, res) => {
-    userid = req.params.userid;
-    room = await Room.findAll({
+    const userid = req.params.userid;
+    const room = await Room.findAll({
       where: { userId: userid, statusRoom: "ACTIVE" },
     });
     if (room) {
@@ -75,13 +77,13 @@ module.exports = {
   },
 
   updateRoom: async (req, res) => {
-    roomid = req.params.roomid;
-    room = await Room.findOne({
+    const roomid = req.params.roomid;
+    const room = await Room.findOne({
       where: { id: roomid },
     });
     if (req.body.name) {
       room.name = req.body.name;
-      data = await room.save();
+      const data = await room.save();
       if (data) {
         res.status(200).json(data);
       } else {
@@ -97,8 +99,8 @@ module.exports = {
   },
 
   deleteRoom: async (req, res) => {
-    roomid = req.params.roomid;
-    room = await Room.findOne({
+    const roomid = req.params.roomid;
+    const room = await Room.findOne({
       where: { id: roomid },
     });
     if (room) {
@@ -108,7 +110,7 @@ module.exports = {
         message: `Cannot find room.`,
       });
     }
-    data = await room.save();
+    const data = await room.save();
     if (data) {
       res.status(200).send({
         message: `Delete room success.`,
@@ -121,22 +123,51 @@ module.exports = {
   },
 
   getAllRooms: async (req, res) => {
-      room = await Room.findAll({
-        where: {statusRoom: 'ACTIVE'},
-        include:[
-          {
-            model: User,
-            required: true,
-            as: "user_room"
-          }
-        ]
-      });
-      console.log(room);
+    const room = await Room.findAll({
+      where: { statusRoom: "ACTIVE" },
+      include: [
+        {
+          model: User,
+          required: true,
+          as: "user_room",
+        },
+      ],
+    });
     if (room) {
       res.json(room);
     } else {
       res.status(500).send({
-        message: `Not found room`
+        message: `Not found room`,
+      });
+    }
+  },
+
+  getHighestPost: async (req, res) => {
+    const id = req.params.roomid;
+    const statist = await Post.findAll({
+      attributes: [
+        "userId",
+        "roomId",
+        [model.sequelize.fn("count", model.sequelize.col("userId")), "statist"],
+      ],
+      where: { roomId: id, statusPost: "ACTIVE" },
+      group: ["Post.userId"],
+      order: [[model.sequelize.literal("statist"), "DESC"]],
+      include: [
+        {
+          model: User,
+          required: true,
+          as: "user_post",
+          attributes: ["name", "display"],
+        },
+      ],
+    });
+    // console.log(statist);
+    if (statist) {
+      res.status(200).json(statist);
+    } else {
+      res.status(500).send({
+        message: `Not found room`,
       });
     }
   },
