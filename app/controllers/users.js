@@ -8,8 +8,8 @@ module.exports = {
   // uploadImg,
   //Get user by email
   getUser: async (req, res) => {
-    email = req.params.email;
-    user = await User.findOne({
+    const email = req.params.email;
+    const user = await User.findOne({
       where: { email: email },
     });
     if (user) {
@@ -23,13 +23,12 @@ module.exports = {
 
   //Create user
   createUser: async (req, res) => {
-    data = await User.create({
+    const data = await User.create({
       name: req.body.name,
       email: req.body.email,
       display: req.body.display,
     });
     if (data) {
-      console.log(data.display);
       res.status(200).json(data);
     } else {
       res.status(500).send({
@@ -40,8 +39,8 @@ module.exports = {
 
   //update user
   UpdateUser: async (req, res) => {
-    id = req.params.id;
-    user = await User.findOne({
+    const id = req.params.id;
+    const user = await User.findOne({
       where: { id: id },
     });
     if (req.body.name) {
@@ -50,16 +49,14 @@ module.exports = {
       const image = req.file.path
         ? req.file.path.replace(/\\/g, "/").replace("public", "static")
         : "";
-      console.log(req.file.path);
       const url = "http://147.182.209.40/";
-      console.log("new path image >> ", url + image);
       user.display = url + image;
     } else {
       res.status(500).send({
         message: `Cannot update user`,
       });
     }
-    data = await user.save();
+    const data = await user.save();
     if (data) {
       res.status(200).json(data);
     } else {
@@ -70,9 +67,9 @@ module.exports = {
   },
 
   getStatistic: async (req, res) => {
-    id = req.body.id;
-    role = req.body.role;
-    post = await User.findAndCountAll({
+    const id = req.body.id;
+    const role = req.body.role;
+    const post = await User.findAndCountAll({
       where: { id: id },
       include: [
         {
@@ -83,7 +80,7 @@ module.exports = {
         },
       ],
     });
-    comment = await User.findAndCountAll({
+    const comment = await User.findAndCountAll({
       where: { id: id },
       include: [
         {
@@ -94,7 +91,7 @@ module.exports = {
         },
       ],
     });
-    con = await User.findAndCountAll({
+    const con = await User.findAndCountAll({
       where: { id: id },
       include: [
         {
@@ -112,7 +109,7 @@ module.exports = {
         },
       ],
     });
-    vote = await User.findAndCountAll({
+    const vote = await User.findAndCountAll({
       where: { id: id },
       include: [
         {
@@ -124,18 +121,18 @@ module.exports = {
       ],
     });
     if (post) {
-        if (role == "USER") {
-          res.status(200).json({
-            user_post: post.count,
-            user_comment: comment.count,
-            best_comment: con.count,
-            user_vote: vote.count,
-          });
-        } else {
-          res.status(200).json({
-            user_post: post.count,
-          });
-        }
+      if (role == "USER") {
+        res.status(200).json({
+          user_post: post.count,
+          user_comment: comment.count,
+          best_comment: con.count,
+          user_vote: vote.count,
+        });
+      } else {
+        res.status(200).json({
+          user_post: post.count,
+        });
+      }
     } else {
       res.status(500).send({
         message: `Cannot get statistic user`,
