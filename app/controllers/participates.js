@@ -4,8 +4,8 @@ const User = model.User;
 const Room = model.Room;
 module.exports = {
   getParticipate: async (req, res) => {
-    roomid = req.params.roomid;
-    data = await Participate.findAll({
+    const roomid = req.params.roomid;
+    const data = await Participate.findAll({
       where: { roomId: roomid, joinStatus: 1 },
       include: [
         {
@@ -29,7 +29,7 @@ module.exports = {
   },
 
   joinRoom: async (req, res) => {
-    lookingData = await Participate.findOne({
+    const lookingData = await Participate.findOne({
       where: {
         userId: req.body.userId,
         roomId: req.body.roomId,
@@ -38,7 +38,7 @@ module.exports = {
     console.log(lookingData);
     if (lookingData) {
       if (lookingData.joinStatus == false) {
-        updateStatus = await Participate.update(
+        const updateStatus = await Participate.update(
           {
             joinStatus: true,
           },
@@ -59,12 +59,12 @@ module.exports = {
           message: `Cannot create participates`,
         });
       }
-      joinData = await Participate.create({
+      const joinData = await Participate.create({
         userId: req.body.userId,
         roomId: req.body.roomId,
       });
       if (joinData) {
-        value = await Participate.findAll({
+        const value = await Participate.findAll({
           where: { userId: req.body.userId },
           include: [
             {
@@ -74,13 +74,13 @@ module.exports = {
             },
           ],
         });
-      }
-      if (joinData) {
-        res.status(201).json(value);
-      } else {
-        res.status(500).send({
-          message: `Cannot create participates`,
-        });
+        if (value) {
+          res.status(201).json(value);
+        } else {
+          res.status(500).send({
+            message: `Cannot create participates`,
+          });
+        }
       }
       res.status(500).send({
         message: `Cannot create participates`,
@@ -89,7 +89,7 @@ module.exports = {
   },
 
   getRoomParticipate: async (req, res) => {
-    id = req.params.id;
+    const id = req.params.id;
     const room = await Participate.findAll({
       where: { userId: id, joinStatus: 1 },
       include: [
