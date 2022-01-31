@@ -23,7 +23,7 @@ const { uploadImg } = require("../middlewares/multer");
 
 const { createComment, getComment, editComment, deleteComment, getCommentHistory } = require("../controllers/comment");
 
-
+const {vote,myVote}=require("../controllers/vote.js");
 
 module.exports = function (app) {
   app.get("/user/:email", getUser);
@@ -55,4 +55,7 @@ module.exports = function (app) {
   app.put("/comment/edit", editComment);
   app.put("/comment/delete/:commentId", deleteComment);
   app.get("/comment/history/:commentId", getCommentHistory);
+
+  app.put("/vote",vote);
+  app.post("/vote/room/post",myVote)
 };
