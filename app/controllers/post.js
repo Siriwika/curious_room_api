@@ -2,6 +2,9 @@ const model = require("../models");
 const Post = model.Post;
 const PostHistory = model.PostHistory;
 const User = model.User;
+const Vote = model.Vote;
+const sequelize = require("sequelize");
+// const { QueryTypes } = require("sequelize");
 
 module.exports = {
   createPost: async (req, res) => {
@@ -14,14 +17,15 @@ module.exports = {
         userId: req.body.userId,
         roomId: req.body.roomId,
       });
+      let post;
       if (img) {
-        const post = await PostHistory.create({
+        post = await PostHistory.create({
           content: req.body.content,
           image: url + img,
           postId: data.id,
         });
       } else {
-        const post = await PostHistory.create({
+        post = await PostHistory.create({
           content: req.body.content,
           postId: data.id,
         });
@@ -62,9 +66,56 @@ module.exports = {
           as: "post_history",
         },
       ],
+      raw: true,
+      nest: true,
     });
     if (postInfo[0] != null) {
-      res.status(200).json(postInfo);
+      let listId = [];
+      let score = [];
+      for(let i =0; i < postInfo.length;i++){
+        listId.push(postInfo[i].id);
+      }
+      console.log(listId);
+      for (let i = 0; i < listId.length; i++) {
+        const allRow = await Vote.findAll({
+          attributes: [
+            [
+              sequelize.fn("count", sequelize.col("postId")),
+              "countAllRow",
+            ],
+          ],
+          where: { postId: listId[i], voteStatus: 1 },
+          raw: true,
+          nest: true,
+        });
+  
+        const downVote = await Vote.findAll({
+          attributes: [
+            [
+              sequelize.fn("count", sequelize.col("postId")),
+              "allDownVote",
+            ],
+          ],
+          where: { postId: listId[i], voteStatus: 0 },
+          raw: true,
+          nest: true,
+        });
+        // score.push(allRow[0].countAllRow - downVote[0].allDownVote);
+        if (allRow && downVote) {
+          score.push(allRow[0].countAllRow - downVote[0].allDownVote);
+        } else {
+           score.push(2);
+        }
+      }
+      if(score[0] != 2){
+        let i = {"score" : score};
+        postInfo.push(i);
+        res.status(200).json(postInfo);
+      }else {
+        res.status(500).send({
+          message: `Cannot get post`,
+        });
+      }
     } else if (postInfo[0] == null) {
       res.status(500).send({
         message: `No post`,
@@ -141,9 +192,11 @@ module.exports = {
     const postHis = await PostHistory.findAll({
       where: { postId: req.params.postid },
       order: [["id", "DESC"]],
+      raw: true,
+      nest: true,
     });
     if (postHis) {
-      res.json(postHis);
+      res.status(200).json(postHis);
     } else {
       res.status(500).send({
         message: `Not found Post history`,
