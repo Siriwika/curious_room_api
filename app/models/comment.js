@@ -22,10 +22,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "commentId",
         as: "comment_history",
       });
-      Comment.hasOne(models.Post, {
-        foreignKey: "commentId",
-        as: "best_comment",
-      });
+      // Comment.hasOne(models.Post, {
+      //   foreignKey: "commentId",
+      //   as: "best_comment",
+      // });
     }
   }
   Comment.init(
@@ -45,7 +45,9 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       statusComment: DataTypes.ENUM("ACTIVE", "DELETE"),
+      confirmStatus: DataTypes.BOOLEAN,
     },
+
     {
       sequelize,
       modelName: "Comment",

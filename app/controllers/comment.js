@@ -16,7 +16,7 @@ module.exports = {
       });
       if (comment) {
         res.status(200).send({
-          message: `Create comment success`,
+          comment,
         });
       } else {
         res.status(500).send({
