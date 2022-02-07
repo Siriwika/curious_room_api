@@ -117,4 +117,43 @@ module.exports = {
       });
     }
   },
+  confirmComment: async (req, res) => {
+    const confirm = await Comment.findOne({
+      where: { id: req.params.commentId },
+    });
+    confirm.confirmStatus = 1;
+    const data = await confirm.save();
+    if (data) {
+      res.status(200).send({
+        message: `Confirm comment success`,
+      });
+    } else {
+      res.status(500).send({
+        message: `Cannot confirm comment`,
+      });
+    }
+  },
+  updateConfirm: async (req, res) => {
+    const editData = await Comment.findOne({
+      where: { postId: req.body.postId, confirmStatus: 1 },
+    });
+    editData.confirmStatus = 0;
+    const data = await editData.save();
+    if (data) {
+      const confirm = await Comment.findOne({
+        where: { id: req.body.commentId },
+      });
+      confirm.confirmStatus = 1;
+      const data2 = await confirm.save();
+      if (data2) {
+        res.status(200).send({
+          message: `Confirm comment success`,
+        });
+      }
+    } else {
+      res.status(500).send({
+        message: `Cannot confirm comment`,
+      });
+    }
+  },
 };

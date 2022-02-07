@@ -1,4 +1,9 @@
-const { getUser, createUser, UpdateUser , getStatistic } = require("../controllers/users");
+const {
+  getUser,
+  createUser,
+  UpdateUser,
+  getStatistic,
+} = require("../controllers/users");
 
 const {
   createRoom,
@@ -17,13 +22,27 @@ const {
   deleteParticipate,
 } = require("../controllers/participates");
 
-const {createPost, getPost,editPost,deletePost, getPostHistory} = require("../controllers/post");
+const {
+  createPost,
+  getPost,
+  editPost,
+  deletePost,
+  getPostHistory,
+} = require("../controllers/post");
 
 const { uploadImg } = require("../middlewares/multer");
 
-const { createComment, getComment, editComment, deleteComment, getCommentHistory } = require("../controllers/comment");
+const {
+  createComment,
+  getComment,
+  editComment,
+  deleteComment,
+  getCommentHistory,
+  confirmComment,
+  updateConfirm,
+} = require("../controllers/comment");
 
-const {vote,myVote}=require("../controllers/vote.js");
+const { vote, myVote } = require("../controllers/vote.js");
 
 module.exports = function (app) {
   app.get("/user/:email", getUser);
@@ -36,8 +55,8 @@ module.exports = function (app) {
   app.get("/room/:code", getRoomByCode);
   app.put("/room/:roomid", updateRoom);
   app.put("/room/delete/:roomid", deleteRoom);
-  app.get("/room", getAllRooms)
-  app.get("/room/stat/:roomid",getHighestPost);
+  app.get("/room", getAllRooms);
+  app.get("/room/stat/:roomid", getHighestPost);
 
   app.get("/participate/:roomid", getParticipate);
   app.get("/participate/room/:id", getRoomParticipate);
@@ -55,7 +74,9 @@ module.exports = function (app) {
   app.put("/comment/edit", editComment);
   app.put("/comment/delete/:commentId", deleteComment);
   app.get("/comment/history/:commentId", getCommentHistory);
+  app.put("/comment/confirm/:commentId", confirmComment);
+  app.put("/comment/editConfirm", updateConfirm);
 
-  app.put("/vote",vote);
-  app.post("/vote/room/post",myVote)
+  app.put("/vote", vote);
+  app.post("/vote/room/post", myVote);
 };
