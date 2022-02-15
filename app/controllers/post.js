@@ -47,79 +47,86 @@ module.exports = {
   },
 
   getPost: async (req, res) => {
-    const postInfo = await Post.findAll({
-      where: { roomId: req.params.roomid, statusPost: "ACTIVE" },
-      order: [["id", "DESC"]],
-      include: [
-        {
-          model: User,
-          required: true,
-          as: "user_post",
-        },
-        {
-          model: PostHistory,
-          where: {
-            status: 1,
+    const check = req.params.filter;
+    let data;
+    if (check == "true") {
+      data = await Post.findAll({
+        where: { roomId: req.params.roomid, statusPost: "ACTIVE" },
+        order: [["countVote", "DESC"],["id", "DESC"]],
+        include: [
+          {
+            model: User,
+            required: true,
+            as: "user_post",
           },
-
-          required: true,
-          as: "post_history",
-        },
-      ],
-      raw: true,
-      nest: true,
-    });
-    if (postInfo[0] != null) {
+          {
+            model: PostHistory,
+            where: {
+              status: 1,
+            },
+            required: true,
+            as: "post_history",
+          },
+        ],
+        raw: true,
+        nest: true,
+      });
+    } else {
+      data = await Post.findAll({
+        where: { roomId: req.params.roomid, statusPost: "ACTIVE" },
+        order: [["id", "DESC"]],
+        include: [
+          {
+            model: User,
+            required: true,
+            as: "user_post",
+          },
+          {
+            model: PostHistory,
+            where: {
+              status: 1,
+            },
+            required: true,
+            as: "post_history",
+          },
+        ],
+        raw: true,
+        nest: true,
+      });
+    }
+    let listVote = [];
+    if (data) {
       let listId = [];
-      let score = [];
-      for(let i =0; i < postInfo.length;i++){
-        listId.push(postInfo[i].id);
+      for (let i = 0; i < data.length; i++) {
+        listId.push(data[i].id);
       }
       console.log(listId);
       for (let i = 0; i < listId.length; i++) {
-        const allRow = await Vote.findAll({
-          attributes: [
-            [
-              sequelize.fn("count", sequelize.col("postId")),
-              "countAllRow",
-            ],
-          ],
-          where: { postId: listId[i], voteStatus: 1 },
+        const myEachVote = await Vote.findAll({
+          where: { postId: listId[i], userId: req.params.userid },
           raw: true,
           nest: true,
         });
-  
-        const downVote = await Vote.findAll({
-          attributes: [
-            [
-              sequelize.fn("count", sequelize.col("postId")),
-              "allDownVote",
-            ],
-          ],
-          where: { postId: listId[i], voteStatus: 0 },
-          raw: true,
-          nest: true,
-        });
-        // score.push(allRow[0].countAllRow - downVote[0].allDownVote);
-        if (allRow && downVote) {
-          score.push(allRow[0].countAllRow - downVote[0].allDownVote);
+        if (myEachVote) {
+          let status;
+          if (myEachVote[0] == null) {
+            status = "none";
+          } else {
+            status = myEachVote[0].voteStatus;
+          }
+          listVote.push(status);
         } else {
-           score.push(2);
+          listVote.push(2);
         }
       }
-      if(score[0] != 2){
-        let i = {"score" : score};
-        postInfo.push(i);
-        res.status(200).json(postInfo);
-      }else {
+      if (listVote[0] != 2) {
+        data.push({ listVoteStatus: listVote });
+        res.status(200).json(data);
+      } else {
         res.status(500).send({
-          message: `Cannot get post`,
+          message: `Cannot get status`,
         });
       }
-    } else if (postInfo[0] == null) {
-      res.status(500).send({
-        message: `No post`,
-      });
     } else {
       res.status(500).send({
         message: `Cannot get post`,
@@ -137,14 +144,15 @@ module.exports = {
         ? req.file.path.replace(/\\/g, "/").replace("public", "static")
         : null;
       const url = "http://147.182.209.40/";
+      let post;
       if (picture) {
-        const post = await PostHistory.create({
+        post = await PostHistory.create({
           content: req.body.content,
           image: url + picture,
           postId: req.body.postId,
         });
       } else {
-        const post = await PostHistory.create({
+        post = await PostHistory.create({
           content: req.body.content,
           postId: req.body.postId,
         });
@@ -200,6 +208,63 @@ module.exports = {
     } else {
       res.status(500).send({
         message: `Not found Post history`,
+      });
+    }
+  },
+
+  getFilter: async (req, res) => {
+    const check = req.body.filter;
+    let data;
+    if (check) {
+      data = await Post.findAll({
+        where: { roomId: req.params.roomid, statusPost: "ACTIVE" },
+        order: [["id", "DESC"]],
+        include: [
+          {
+            model: User,
+            required: true,
+            as: "user_post",
+          },
+          {
+            model: PostHistory,
+            where: {
+              status: 1,
+            },
+            required: true,
+            as: "post_history",
+          },
+        ],
+        raw: true,
+        nest: true,
+      });
+    } else {
+      data = await Post.findAll({
+        where: { roomId: req.params.roomid, statusPost: "ACTIVE" },
+        order: [["countVote", "DESC"]],
+        include: [
+          {
+            model: User,
+            required: true,
+            as: "user_post",
+          },
+          {
+            model: PostHistory,
+            where: {
+              status: 1,
+            },
+            required: true,
+            as: "post_history",
+          },
+        ],
+        raw: true,
+        nest: true,
+      });
+    }
+    if (data) {
+      res.status(200).json(data);
+    } else {
+      res.status(500).send({
+        message: `Cannot get post`,
       });
     }
   },

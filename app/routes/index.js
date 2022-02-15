@@ -28,6 +28,7 @@ const {
   editPost,
   deletePost,
   getPostHistory,
+  getFilter,
 } = require("../controllers/post");
 
 const { uploadImg } = require("../middlewares/multer");
@@ -42,7 +43,7 @@ const {
   updateConfirm,
 } = require("../controllers/comment");
 
-const { vote, myVote } = require("../controllers/vote.js");
+const { vote } = require("../controllers/vote.js");
 
 module.exports = function (app) {
   app.get("/user/:email", getUser);
@@ -64,10 +65,11 @@ module.exports = function (app) {
   app.put("/participate/:roomid", deleteParticipate);
 
   app.post("/post", uploadImg.single("image"), createPost);
-  app.get("/post/:roomid", getPost);
+  app.get("/post/:roomid/:userid/:filter", getPost);
   app.put("/post/edit", uploadImg.single("image"), editPost);
   app.put("/post/delete/:postid", deletePost);
   app.get("/post/history/:postid", getPostHistory);
+  app.get("/post/filter/:roomid",  getFilter);
 
   app.post("/comment", createComment);
   app.get("/comment/:postId", getComment);
@@ -78,5 +80,4 @@ module.exports = function (app) {
   app.put("/comment/editConfirm", updateConfirm);
 
   app.put("/vote", vote);
-  app.post("/vote/room/post", myVote);
 };

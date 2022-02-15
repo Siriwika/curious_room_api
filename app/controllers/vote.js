@@ -2,6 +2,7 @@ const model = require("../models");
 const Vote = model.Vote;
 const Post = model.Post;
 const sequelize = require("sequelize");
+const e = require("express");
 // const { QueryTypes } = require("sequelize");
 
 module.exports = {
@@ -12,11 +13,27 @@ module.exports = {
     const check = await Vote.findOne({
       where: { postId: postid, userId: userid },
     });
-    console.log(check);
+    const score = await Post.findOne({
+      where: { id: postid, statusPost: "ACTIVE" },
+    });
+    let updateScore;
     if (check) {
       check.voteStatus = wantTo;
       const changeVote = await check.save();
-      if (changeVote) {
+      if (score) {
+        if (wantTo == 1) {
+          score.upVote = score.upVote + 1;
+          score.downVote = score.downVote - 1;
+          score.countVote = score.countVote + 2;
+          updateScore = await score.save();
+        } else {
+          score.downVote = score.downVote + 1;
+          score.upVote = score.upVote - 1;
+          score.countVote = score.countVote - 2;
+          updateScore = await score.save();
+        }
+      }
+      if (updateScore && changeVote) {
         res.status(200).json(changeVote);
       } else {
         res.status(500).send({
@@ -28,67 +45,34 @@ module.exports = {
         voteStatus: wantTo,
         userId: userid,
         postId: postid,
+        include: [
+          {
+            model: Post,
+            required: true,
+            as: "post_vote",
+          },
+        ],
+        raw: true,
+        nest: true,
       });
-      if (myVote) {
+      if (score) {
+      if (wantTo == 1) {
+        score.upVote = score.upVote + 1;
+        score.countVote = score.countVote + 1;
+        updateScore = await score.save();
+      } else {
+        score.downVote = score.downVote + 1;
+        score.countVote = score.countVote - 1;
+        updateScore = await score.save();
+      }
+    }
+      if (myVote && updateScore) {
         res.status(200).json(myVote);
       } else {
         res.status(500).send({
           message: `Cannot vote`,
         });
       }
-    }
-  },
-
-  myVote: async (req, res) => {
-    const postInfo = await Post.findAll({
-      where: { roomId: req.body.roomId, statusPost: "ACTIVE" },
-      order: [["id", "DESC"]],
-      raw: true,
-      nest: true,
-    });
-    let listVote = [];
-    if (postInfo[0] ) {
-      let listId = [];
-      for (let i = 0; i < postInfo.length; i++) {
-        listId.push(postInfo[i].id);
-      }
-      for (let i = 0; i < listId.length; i++) {
-        const myEachVote = await Vote.findAll({
-          where: { postId: listId[i], userId: req.body.userId },
-          raw: true,
-          nest: true,
-        });
-        if (myEachVote) {
-          // console.log(myEachVote[0].voteStatus);
-          let status;
-          if (myEachVote[0] == null) {
-            status = null;
-          } else {
-            status = myEachVote[0].voteStatus;
-          }
-          listVote.push(status);
-        } else {
-          listVote.push(2);
-        }
-      }
-      if (listId != [] && listId[0] != 2) {
-        res.status(200).send({ listVoteStatus: listVote });
-      } else {
-        res.status(500).send({
-          message: `Cannot get status`,
-        });
-      }
-    }
-     else 
-    if (postInfo[0] == null) {
-      res.status(200).send({
-        listVoteStatus: listVote
-      });
-    } 
-    else {
-      res.status(500).send({
-        message: `Cannot get status`,
-      });
     }
   },
 };
