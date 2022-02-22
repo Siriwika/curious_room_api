@@ -96,16 +96,9 @@ module.exports = {
       include: [
         {
           model: Comment,
-          where: { statusComment: "Active" },
+          where: { statusComment: "Active" , confirmStatus: 1},
           as: "user_comment",
           required: true,
-          include: [
-            {
-              model: Post,
-              where: { statusPost: "Active" },
-              as: "best_comment",
-            },
-          ],
         },
       ],
     });
