@@ -1,10 +1,10 @@
 {
   "development": {
-    "username": "doadmin",
-    "password": "SPpdNgd4R8sP19CC",
+    "username": "root",
+    "password": "Ex1rermProject",
     "database": "curious_testdb",
-    "host": "db-mysql-sgp1-57582-do-user-10003243-0.b.db.ondigitalocean.com",
-    "port": 25060,
+    "host": "159.223.59.43",
+    "port": 3306,
     "dialect": "mysql",
     "timezone": "Asia/Bangkok",
 		"dialectOptions": {
@@ -21,11 +21,11 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "doadmin",
-    "password": "SPpdNgd4R8sP19CC",
+    "username": "root",
+    "password": "Ex1rermProject",
     "database": "curious_testdb",
-    "host": "db-mysql-sgp1-57582-do-user-10003243-0.b.db.ondigitalocean.com",
-    "port": 25060,
+    "host": "159.223.59.43",
+    "port": 3306,
     "dialect": "mysql",
     "timezone": "Asia/Bangkok",
 		"dialectOptions": {
