@@ -12,11 +12,6 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "postId",
         as: "post_comment",
       });
-      // Post.belongsTo(models.Comment, {
-      //   onDelete: "CASCADE",
-      //   foreignKey: "commentId",
-      //   as: "best_comment",
-      // });
       Post.belongsTo(models.User, {
         onDelete: "CASCADE",
         foreignKey: "userId",
@@ -39,13 +34,6 @@ module.exports = (sequelize, DataTypes) => {
   }
   Post.init(
     {
-      // commentId: {
-      //   type: DataTypes.INTEGER,
-      //   references: {
-      //     model: "Comment",
-      //     key: "id",
-      //   },
-      // },
       userId: {
         type: DataTypes.INTEGER,
         references: {

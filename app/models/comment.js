@@ -22,10 +22,6 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "commentId",
         as: "comment_history",
       });
-      // Comment.hasOne(models.Post, {
-      //   foreignKey: "commentId",
-      //   as: "best_comment",
-      // });
     }
   }
   Comment.init(

@@ -8,7 +8,7 @@ module.exports = {
       defaultValue: 0,
     });
   },
-
+  
   down: async (queryInterface, Sequelize) => {
     return queryInterface.removeColumn("Comments", "confirmStatus", {
       allowNull: false,

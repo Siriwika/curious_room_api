@@ -137,19 +137,19 @@ module.exports = {
     const editData = await Comment.findOne({
       where: { postId: req.body.postId, confirmStatus: 1 },
     });
-    editData.confirmStatus = 0;
-    const data = await editData.save();
-    if (data) {
-      const confirm = await Comment.findOne({
-        where: { id: req.body.commentId },
+    if (editData) {
+      editData.confirmStatus = 0;
+      await editData.save();
+    }
+    const confirm = await Comment.findOne({
+      where: { id: req.body.commentId },
+    });
+    confirm.confirmStatus = 1;
+    const data2 = await confirm.save();
+    if (data2) {
+      res.status(200).send({
+        message: `Confirm comment success`,
       });
-      confirm.confirmStatus = 1;
-      const data2 = await confirm.save();
-      if (data2) {
-        res.status(200).send({
-          message: `Confirm comment success`,
-        });
-      }
     } else {
       res.status(500).send({
         message: `Cannot confirm comment`,
