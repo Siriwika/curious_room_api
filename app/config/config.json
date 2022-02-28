@@ -7,9 +7,9 @@
     "port": 3306,
     "dialect": "mysql",
     "timezone": "Asia/Bangkok",
-		"dialectOptions": {
-			"timezone": "local"
-		}
+        "dialectOptions": {
+            "timezone": "local"
+        }
   },
 
 
@@ -28,8 +28,9 @@
     "port": 3306,
     "dialect": "mysql",
     "timezone": "Asia/Bangkok",
-		"dialectOptions": {
-			"timezone": "local"
-		}
+        "dialectOptions": {
+            "timezone": "local"
+        }
   }
 }
+
