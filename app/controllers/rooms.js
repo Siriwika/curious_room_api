@@ -1,10 +1,7 @@
-const { json } = require("express/lib/response");
 const model = require("../models");
-const post = require("./post");
 const Room = model.Room;
 const User = model.User;
 const Post = model.Post;
-const { QueryTypes } = require("sequelize");
 
 module.exports = {
   //Create room
@@ -133,6 +130,7 @@ module.exports = {
         },
       ],
     });
+    console.log(room);
     if (room) {
       res.json(room);
     } else {
