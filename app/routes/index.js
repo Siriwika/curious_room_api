@@ -39,7 +39,7 @@ const {
   editComment,
   deleteComment,
   getCommentHistory,
-  confirmComment,
+  unConfirmComment,
   updateConfirm,
 } = require("../controllers/comment");
 
@@ -76,7 +76,7 @@ module.exports = function (app) {
   app.put("/comment/edit", editComment);
   app.put("/comment/delete/:commentId", deleteComment);
   app.get("/comment/history/:commentId", getCommentHistory);
-  app.put("/comment/confirm/:commentId", confirmComment);
+  app.put("/comment/confirm/:commentId", unConfirmComment);
   app.put("/comment/editConfirm", updateConfirm);
 
   app.put("/vote", vote);
