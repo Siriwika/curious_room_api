@@ -117,11 +117,11 @@ module.exports = {
       });
     }
   },
-  confirmComment: async (req, res) => {
+  unConfirmComment: async (req, res) => {
     const confirm = await Comment.findOne({
       where: { id: req.params.commentId },
     });
-    confirm.confirmStatus = 1;
+    confirm.confirmStatus = 0;
     const data = await confirm.save();
     if (data) {
       res.status(200).send({
