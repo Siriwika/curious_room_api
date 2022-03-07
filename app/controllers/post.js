@@ -52,7 +52,10 @@ module.exports = {
     if (check == "true") {
       data = await Post.findAll({
         where: { roomId: req.params.roomid, statusPost: "ACTIVE" },
-        order: [["countVote", "DESC"],["id", "DESC"]],
+        order: [
+          ["countVote", "DESC"],
+          ["id", "DESC"],
+        ],
         include: [
           {
             model: User,
@@ -100,7 +103,6 @@ module.exports = {
       for (let i = 0; i < data.length; i++) {
         listId.push(data[i].id);
       }
-      console.log(listId);
       for (let i = 0; i < listId.length; i++) {
         const myEachVote = await Vote.findAll({
           where: { postId: listId[i], userId: req.params.userid },
@@ -120,7 +122,9 @@ module.exports = {
         }
       }
       if (listVote[0] != 2) {
-        data.push({ listVoteStatus: listVote });
+        if (listVote[0] != null) {
+          data.push({ listVoteStatus: listVote });
+        }
         res.status(200).json(data);
       } else {
         res.status(500).send({
