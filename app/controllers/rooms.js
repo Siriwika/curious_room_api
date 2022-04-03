@@ -2,6 +2,8 @@ const model = require("../models");
 const Room = model.Room;
 const User = model.User;
 const Post = model.Post;
+const Comment = model.Comment;
+const sequelize = require("sequelize");
 
 module.exports = {
   //Create room
@@ -165,7 +167,97 @@ module.exports = {
       res.status(200).json(statist);
     } else {
       res.status(500).send({
-        message: `Not found room`,
+        message: `Unable to calculate`,
+      });
+    }
+  },
+
+  getHighestAns: async (req, res) => {
+    const PostData = await Post.findAll({
+      where: { roomId: req.params.roomid, statusPost: "ACTIVE" },
+      order: [["id", "DESC"]],
+    });
+    let listAnsScore = [];
+    let finish = [];
+    if (PostData) {
+      for (let l = 0; l < PostData.length; l++) {
+        console.log(PostData[l].id);
+        getConfirm = await Comment.findAll({
+          where: {
+            postId: PostData[l].id,
+            statusComment: "ACTIVE",
+            confirmStatus: 1,
+          },
+          attributes: [
+            "userId",
+            [
+              model.sequelize.fn("count", model.sequelize.col("userId")),
+              "statist",
+            ],
+          ],
+          group: ["userId"],
+          include: [
+            {
+              model: User,
+              required: true,
+              as: "user_comment",
+              attributes: ["name", "display"],
+            },
+          ],
+          raw: true,
+          nest: true,
+        });
+        if (getConfirm) {
+          // getConfirm[0] != null ? listAnsScore.push(getConfirm[0]) : null;
+          finish = getConfirm;
+        } else {
+          listAnsScore.push(0);
+        }
+      }
+
+      if (listAnsScore[0] != 0) {
+        // console.log(finish);
+        // finish.push(listAnsScore);
+        res.status(200).json(finish);
+      } else {
+        res.status(500).send({
+          message: `Unable to calculate `,
+        });
+      }
+    } else {
+      res.status(500).send({
+        message: `Unable to calculate `,
+      });
+    }
+  },
+
+  getChartData: async (req, res) => {
+    console.log(req.params.roomid);
+    const statist = await Post.findAll({
+      where: { roomId: req.params.roomid, statusPost: "ACTIVE" },
+      attributes: [
+        "userId",
+        [sequelize.fn("sum", sequelize.col("countVote")), "mostLike"],
+      
+      ],
+      include: [
+        {
+          model: User,
+          required: true,
+          as: "user_post",
+          attributes: ["name"],
+        },
+      ],
+      group: ["userId"],
+      order: [[model.sequelize.literal("mostLike"), "DESC"]],
+      raw: true,
+      nest: true,
+    });
+    if (statist) {
+      res.status(200).json(statist);
+    } else {
+      res.status(500).send({
+        message: `Unable to calculate`,
       });
     }
   },
