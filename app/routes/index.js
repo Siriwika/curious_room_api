@@ -13,6 +13,8 @@ const {
   deleteRoom,
   getAllRooms,
   getHighestPost,
+  getHighestAns,
+  getChartData,
 } = require("../controllers/rooms");
 
 const {
@@ -57,7 +59,9 @@ module.exports = function (app) {
   app.put("/room/:roomid", updateRoom);
   app.put("/room/delete/:roomid", deleteRoom);
   app.get("/room", getAllRooms);
-  app.get("/room/stat/:roomid", getHighestPost);
+  app.get("/room/stat/post/:roomid", getHighestPost);
+  app.get("/room/stat/ans/:roomid", getHighestAns);
+  app.get("/room/statChart/:roomid", getChartData);
 
   app.get("/participate/:roomid", getParticipate);
   app.get("/participate/room/:id", getRoomParticipate);
