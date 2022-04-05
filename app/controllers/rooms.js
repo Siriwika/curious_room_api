@@ -179,6 +179,7 @@ module.exports = {
     });
     let listAnsScore = [];
     let finish = [];
+    let check = [];
     if (PostData) {
       for (let l = 0; l < PostData.length; l++) {
         console.log(PostData[l].id);
@@ -208,8 +209,12 @@ module.exports = {
           nest: true,
         });
         if (getConfirm) {
+          // console.log(getConfirm[0] == null);
           // getConfirm[0] != null ? listAnsScore.push(getConfirm[0]) : null;
-          finish = getConfirm;
+          if(getConfirm[0] != null){
+            finish.push(getConfirm[0]);
+          }
+          
         } else {
           listAnsScore.push(0);
         }
