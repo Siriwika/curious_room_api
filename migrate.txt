@@ -17,3 +17,6 @@ npx sequelize-cli model:generate --name Vote --attributes voteStatus:boolean,use
 npx sequelize migration:create --name add-column-post
 
 npx sequelize db:migrate 
+
+
+test newpc by cake
