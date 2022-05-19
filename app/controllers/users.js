@@ -49,7 +49,7 @@ module.exports = {
       const image = req.file.path
         ? req.file.path.replace(/\\/g, "/").replace("public", "static")
         : "";
-      const url = "http://147.182.209.40/";
+      const url = "http://157.230.240.207/";
       user.display = url + image;
     } else {
       res.status(500).send({

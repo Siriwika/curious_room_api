@@ -11,7 +11,7 @@ module.exports = {
     const img = req.file
       ? req.file.path.replace(/\\/g, "/").replace("public", "static")
       : null;
-    const url = "http://147.182.209.40/";
+    const url = "http://157.230.240.207/";
     if (req.body.userId != null) {
       const data = await Post.create({
         userId: req.body.userId,
@@ -147,7 +147,7 @@ module.exports = {
       const picture = req.file
         ? req.file.path.replace(/\\/g, "/").replace("public", "static")
         : null;
-      const url = "http://147.182.209.40/";
+      const url = "http://157.230.240.207/";
       let post;
       if (picture) {
         post = await PostHistory.create({
