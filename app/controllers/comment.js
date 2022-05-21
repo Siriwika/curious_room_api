@@ -8,6 +8,7 @@ module.exports = {
     const data = await Comment.create({
       postId: req.body.postId,
       userId: req.body.userId,
+      roomId: req.body.roomId
     });
     if (data) {
       const comment = await CommentHistory.create({
